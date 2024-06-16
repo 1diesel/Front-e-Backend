@@ -1,44 +1,28 @@
-// src/components/LoginForm.js
-import { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate, Link } from 'react-router-dom'; // Adicionamos Link para navegação interna
+import { useNavigate, Link } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 import './LoginForm.css';
 
 const LoginForm = () => {
-  const navigate = useNavigate(); // Hook para navegação
-  const { register, handleSubmit } = useForm(); // Hook para lidar com formulários
-  const [setLoginSuccess] = useState(false); // Estado para sucesso de login
-  const [errorMessage, setErrorMessage] = useState(''); // Estado para mensagens de erro
+  const navigate = useNavigate();
+  const { register, handleSubmit } = useForm();
+  const [errorMessage, setErrorMessage] = useState('');
+  const { login } = useContext(AuthContext);
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     // Ajusta a chave 'utilizador' para 'name' antes de enviar ao backend
     data.name = data.utilizador;
     delete data.utilizador;
 
-    login(data);
-  };
-
-  const login = (data) => {
-    fetch('http://127.0.0.1:3001/auth/login', {
-      headers: { 'Content-type': 'application/json' },
-      method: 'POST',
-      body: JSON.stringify(data),
-    })
-      .then((response) => response.json())
-      .then((response) => {
-        if (response.auth) {
-          setLoginSuccess(true);
-          console.log('Login successful');
-          navigate('/utilizador'); // Redireciona para a página do utilizador após o login
-        } else {
-          setErrorMessage('Login falhou. Verifique as credenciais.');
-          console.log('Login failed');
-        }
-      })
-      .catch((error) => {
-        console.log('Error:', error);
-        setErrorMessage('Ocorreu um erro ao tentar fazer login.');
-      });
+    const result = await login(data);
+    if (result.success) {
+      console.log('Login successful');
+      navigate('/utilizador'); // Redireciona para a página do utilizador após o login
+    } else {
+      setErrorMessage(result.message);
+      console.log('Login failed');
+    }
   };
 
   return (

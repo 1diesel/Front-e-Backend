@@ -1,0 +1,78 @@
+.user-page {
+    background: linear-gradient(135deg, #f3ec78, #af4261);
+    color: #fff;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    max-width: 800px;
+    margin: 40px auto;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .user-page h1 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+  }
+  
+  .user-actions {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+  }
+  
+  .user-actions button {
+    background: #fff;
+    color: #af4261;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    font-size: 1rem;
+  }
+  
+  .user-actions button:hover {
+    transform: scale(1.1);
+  }
+  
+  .edit-details, .change-password, .profile-picture-upload, .delete-account {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .edit-details h2, .change-password h2, .profile-picture-upload h2, .delete-account h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+  
+  .edit-details form, .change-password, .profile-picture-upload, .delete-account {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .edit-details label, .change-password input, .profile-picture-upload input, .delete-account input {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    color: #fff;
+  }
+  
+  .edit-details button, .change-password button, .profile-picture-upload button, .delete-account button {
+    background: #fff;
+    color: #af4261;
+    border: none;
+    padding: 10px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    font-size: 1rem;
+  }
+  
+  .edit-details button:hover, .change-password button:hover, .profile-picture-upload button:hover, .delete-account button:hover {
+    transform: scale(1.1);
+  }  

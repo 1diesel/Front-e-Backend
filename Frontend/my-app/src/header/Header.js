@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 import './Header.css';
 
 const Header = ({ darkMode }) => {
+  const { auth } = useContext(AuthContext);
+
   return (
     <header className={`header ${darkMode ? 'header-dark' : 'header-light'}`}>
       <div className="header-left">
@@ -21,9 +24,21 @@ const Header = ({ darkMode }) => {
         <input type="text" className="search-bar" placeholder="Pesquisar..." />
       </div>
       <div className="header-right">
-        <Link to="/login">
-          <button className="button login-button">Login</button>
-        </Link>
+        {auth.isAuthenticated ? (
+          <Link to="/utilizador">
+            <button className="button profile-button">
+              <img
+                src="https://via.placeholder.com/30"
+                alt="Profile"
+                className="profile-icon"
+              />
+            </button>
+          </Link>
+        ) : (
+          <Link to="/login">
+            <button className="button login-button">Login</button>
+          </Link>
+        )}
         <Link to="/carrinho">
           <button className="button cart-button">Carrinho</button>
         </Link>

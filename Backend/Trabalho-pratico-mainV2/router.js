@@ -11,7 +11,7 @@ let VendaAPI = require("./server/vendas");
 function initialize() {
     let api = express();
 
-    api.use(cors()); // Habilita CORS
+    api.use(cors());
     api.use(bodyParser.json());
 
     api.use("/auth", AuthAPI());

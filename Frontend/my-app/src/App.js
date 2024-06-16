@@ -7,6 +7,7 @@ import Header from "./header/Header";
 import Produtos from "./produto/Produtos";
 import HomePage from "./homepage/HomePage";
 import ProductDetails from './produto/ProductDetails';
+import UserPage from "./components/UserPage";
 import ErrorPage from "./error/ErrorPage";
 import Carrinho from './carrinho/CartPage';
 
@@ -18,6 +19,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginForm />} />
+          <Route path="/utilizador" element={<UserPage />} />
           <Route path="/carrinho" element={<Carrinho />} />
           <Route path="/registar" element={<RegisterForm />} />
           <Route path="/produtos/:productId" element={<ProductDetails />} />
