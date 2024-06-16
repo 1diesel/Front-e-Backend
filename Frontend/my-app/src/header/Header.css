@@ -1,10 +1,11 @@
+/* Header.css */
 .header {
-  background-color: #260700; /* Cor de fundo do header */
-  color: #DB6B1A; /* Cor do texto */
-  padding: 7px 15px; /* Espaçamento interno */
-  display: flex; /* Usa flexbox para layout */
-  align-items: center; /* Alinha os itens no centro verticalmente */
-  justify-content: space-between; /* Distribui os itens com espaço entre eles */
+  background-color: #260700;
+  color: #db6b1a;
+  padding: 7px 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .header-left {
@@ -13,34 +14,34 @@
 }
 
 .logo {
-  width: 50px; /* Largura do ícone do logo */
-  height: 50px; /* Altura do ícone do logo */
-  margin-right: 10px; /* Espaço entre o ícone e o texto */
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
 }
 
 .title {
   margin: 0;
   padding: 0;
-  color: #DB6B1A; /* Cor do texto do título */
-  font-size: 24px; /* Tamanho da fonte do título */
+  color: #db6b1a;
+  font-size: 24px;
 }
 
 .title-link {
-  text-decoration: none; /* Remove a decoração de link padrão */
+  text-decoration: none;
 }
 
 .header-center {
-  flex: 1; /* Faz a barra de pesquisa ocupar o espaço central */
+  flex: 1;
   display: flex;
-  justify-content: center; /* Centraliza a barra de pesquisa */
+  justify-content: center;
 }
 
 .search-bar {
   width: 100%;
-  max-width: 400px; /* Largura máxima da barra de pesquisa */
-  padding: 7px; /* Espaçamento interno */
-  border: 1px solid #C7BEB7; /* Bordas da barra de pesquisa */
-  border-radius: 4px; /* Bordas arredondadas */
+  max-width: 400px;
+  padding: 7px;
+  border: 1px solid #c7beb7;
+  border-radius: 4px;
 }
 
 .header-right {
@@ -49,20 +50,20 @@
 }
 
 .button {
-  margin-left: 10px; /* Espaço entre os botões */
-  background-color: #DB6B1A; /* Cor de fundo dos botões */
-  color: #fff; /* Cor do texto dos botões */
-  border: none; /* Sem bordas */
-  padding: 7px 15px; /* Espaçamento interno dos botões */
-  border-radius: 4px; /* Bordas arredondadas dos botões */
-  cursor: pointer; /* Cursor em forma de mãozinha */
+  margin-left: 10px;
+  background-color: #db6b1a;
+  color: #fff;
+  border: none;
+  padding: 7px 15px;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 .button:hover {
-  background-color: #DB6B1A; /* Cor de fundo dos botões ao passar o mouse */
+  background-color: #0056b3;
 }
 
-.user-icon {
+.profile-icon {
   width: 40px;
   height: 40px;
   border-radius: 50%;

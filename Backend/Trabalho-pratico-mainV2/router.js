@@ -1,3 +1,5 @@
+// router.js
+
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
@@ -13,11 +15,10 @@ function initialize() {
 
     api.use(cors());
     api.use(bodyParser.json());
-
     api.use("/auth", AuthAPI());
     api.use("/produtos", ProdutoAPI());
     api.use("/stock", StockAPI());
-    api.use("/menu", UtilizadorAPI());
+    api.use("/utilizadores", UtilizadorAPI());
     api.use("/vendas", VendaAPI());
 
     return api;

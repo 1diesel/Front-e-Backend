@@ -11,7 +11,13 @@ function utilizadorCreate(utilizadorModel) {
     recoverPassword,
     authorize,
     save,
+    update,
   };
+
+  function update(id, userData) {
+    return utilizadorModel.findByIdAndUpdate(id, userData, { new: true }).exec();
+  }
+
 
   function createPassword(utilizador) {
     return bcrypt.hash(utilizador.password, config.saltRounds);

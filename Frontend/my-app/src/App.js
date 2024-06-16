@@ -1,14 +1,13 @@
-import "./App.css";
 import React from 'react';
-import { Route, Routes } from "react-router-dom";
-import LoginForm from "./login/LoginForm";
+import { Route, Routes } from 'react-router-dom';
+import LoginForm from './login/LoginForm';
 import RegisterForm from './registar/RegisterForm';
-import Header from "./header/Header";
-import Produtos from "./produto/Produtos";
-import HomePage from "./homepage/HomePage";
+import Header from './header/Header';
+import Produtos from './produto/Produtos';
+import HomePage from './homepage/HomePage';
 import ProductDetails from './produto/ProductDetails';
-import UserPage from "./components/UserPage";
-import ErrorPage from "./error/ErrorPage";
+import UserPage from './components/UserPage';
+import ErrorPage from './error/ErrorPage';
 import Carrinho from './carrinho/CartPage';
 
 function App() {

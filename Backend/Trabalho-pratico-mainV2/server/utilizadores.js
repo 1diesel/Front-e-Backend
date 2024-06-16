@@ -1,6 +1,8 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const Utilizador = require("../data/utilizador/utilizador");
+const utilizadorCreate = require("../data/utilizador/utilizadorService");
+const utilizadorService = utilizadorCreate(Utilizador);
 
 const utilizadorRouter = () => {
   let router = express.Router();
@@ -9,20 +11,16 @@ const utilizadorRouter = () => {
   router.use(bodyParser.urlencoded({ limit: "100mb", extended: true }));
 
   router.use(async (req, res, next) => {
-    const token = req.headers["x-access-token"]; // Obtém o token do cabeçalho da requisição
+    const token = req.headers["x-access-token"];
     if (!token) {
-      return res
-        .status(401)
-        .json({ auth: false, message: "No token provided." }); // Retorna erro de não autorizado se o token não for fornecido
+      return res.status(401).json({ auth: false, message: "No token provided." });
     }
     try {
-      const decoded = await Utilizador.verifyToken(token); // Verifica o token com a função verifyToken do Utilizador
-      req.user = decoded; // Armazena as informações do utilizador decodificado no objeto de requisição
-      next(); // Passa para o próximo middleware
+      const decoded = await Utilizador.verifyToken(token);
+      req.user = decoded;
+      next();
     } catch (err) {
-      return res
-        .status(500)
-        .json({ auth: false, message: "Failed to authenticate token." }); // Retorna erro interno do servidor se houver falha na autenticação do token
+      return res.status(500).json({ auth: false, message: "Failed to authenticate token." });
     }
   });
 
@@ -44,6 +42,28 @@ const utilizadorRouter = () => {
         next(err);
       }
     });
+
+  // Rota para atualizar um usuário
+  router.put("/:id", async (req, res, next) => {
+    try {
+      const userId = req.params.id;
+      const userData = req.body;
+  
+      // Verificar se o usuário autenticado é o mesmo que está tentando atualizar
+      if (req.user.id !== userId) {
+        return res.status(403).json({ message: "Forbidden: You are not allowed to update this user." });
+      }
+  
+      // Atualizar o usuário
+      const updatedUser = await Utilizador.findByIdAndUpdate(userId, userData, { new: true });
+      if (!updatedUser) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      res.json(updatedUser);
+    } catch (err) {
+      next(err);
+    }
+  });
 
   return router;
 };

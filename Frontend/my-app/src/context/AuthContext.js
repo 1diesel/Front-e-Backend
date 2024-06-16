@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 
 export const AuthContext = createContext();
 
@@ -9,6 +9,39 @@ const AuthProvider = ({ children }) => {
     token: null,
   });
 
+  useEffect(() => {
+    const storedAuth = localStorage.getItem('auth');
+    if (storedAuth) {
+      const parsedAuth = JSON.parse(storedAuth);
+      setAuth(parsedAuth);
+      fetchUserDetails(parsedAuth.token);
+    }
+  }, []);
+
+  const fetchUserDetails = async (token) => {
+    try {
+      const response = await fetch('http://127.0.0.1:3001/auth/user', {
+        headers: {
+          'Content-type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      const result = await response.json();
+      if (result.user) {
+        setAuth((prevAuth) => ({
+          ...prevAuth,
+          isAuthenticated: true,
+          user: result.user,
+        }));
+      } else {
+        logout();
+      }
+    } catch (error) {
+      console.error('Failed to fetch user details:', error);
+      logout();
+    }
+  };
+
   const login = async (data) => {
     try {
       const response = await fetch('http://127.0.0.1:3001/auth/login', {
@@ -17,19 +50,21 @@ const AuthProvider = ({ children }) => {
         body: JSON.stringify(data),
       });
       const result = await response.json();
-      if (result.auth) {
-        setAuth({
+      if (result.token) {
+        const newAuth = {
           isAuthenticated: true,
           user: result.user,
           token: result.token,
-        });
+        };
+        setAuth(newAuth);
+        localStorage.setItem('auth', JSON.stringify(newAuth));
         return { success: true };
       } else {
-        return { success: false, message: 'Login falhou. Verifique as credenciais.' };
+        return { success: false, message: 'Login failed. Check your credentials.' };
       }
     } catch (error) {
       console.error('Login failed:', error);
-      return { success: false, message: 'Ocorreu um erro ao tentar fazer login.' };
+      return { success: false, message: 'An error occurred while trying to log in.' };
     }
   };
 
@@ -39,6 +74,7 @@ const AuthProvider = ({ children }) => {
       user: null,
       token: null,
     });
+    localStorage.removeItem('auth');
   };
 
   return (

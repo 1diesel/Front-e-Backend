@@ -1,28 +1,32 @@
-// Dependências
-const http = require("http");
 const express = require("express");
+const http = require("http");
 const mongoose = require("mongoose");
-const config = require("./config");
 const cors = require("cors");
+const router = require("./router");
+const config = require("./config");
 
-// Ligação ao servidor
+const app = express();
+const server = http.Server(app);
+
 const hostname = "127.0.0.1";
 const port = 3001;
 
-const corsOptions = { origin: "http://127.0.0.1:3000", credentials: true };
+// Configurações do CORS
+const corsOptions = {
+  origin: "http://127.0.0.1:3000",
+  credentials: true,
+};
 
-// Arranque do servidor
-let router = require("./router");
-var app = express();
+// Inicialização do servidor
 app.use(cors(corsOptions));
 app.use(router.initialize());
-const server = http.Server(app);
 
-// Ligação ao Cluster
-mongoose
-  .connect(config.db)
-  .then(() => console.log("Conexão estabelecida!"))
-  .catch((err) => console.error(err));
+// Conexão ao banco de dados MongoDB
+mongoose.connect(config.db)
+  .then(() => console.log("Conexão estabelecida com o MongoDB"))
+  .catch((err) => console.error("Erro ao conectar ao MongoDB:", err));
+
+// Inicialização do servidor
 server.listen(port, hostname, () => {
-  console.log(`Endereço do servidor: http://${hostname}:${port}/`);
+  console.log(`Servidor rodando em http://${hostname}:${port}/`);
 });
