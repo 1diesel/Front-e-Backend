@@ -1,3 +1,5 @@
+// data/produto/produtoController.js
+
 function produtoController(ProdutoModel) {
     let controller = {};
 
@@ -12,7 +14,8 @@ function produtoController(ProdutoModel) {
 
     controller.create = async (req, res, next) => {
         try {
-            const produto = await ProdutoModel.create(req.body);
+            const produto = new ProdutoModel(req.body);
+            await produto.save();
             res.status(201).json(produto);
         } catch (err) {
             next(err);

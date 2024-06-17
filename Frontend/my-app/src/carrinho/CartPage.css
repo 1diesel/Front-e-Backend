@@ -1,167 +1,93 @@
-/* CartPage.css */
-
 .cart-container {
-    max-width: 1200px;
-    margin: 20px auto;
+    /* Estilos gerais do carrinho */
+    display: flex;
+    flex-direction: column;
     padding: 20px;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
   
-  .cart-items {
-    margin-bottom: 20px;
-  }
-  
-  .cart-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px;
-    border-bottom: 1px solid #eee;
-  }
-  
-  .product-info {
-    display: flex;
-    align-items: center;
-  }
-  
-  .product-image {
-    width: 80px;
-    height: 80px;
-    margin-right: 20px;
-  }
-  
-  .product-details {
+  .cart-container .cart-items {
     flex: 1;
+    display: flex;
+    flex-direction: column;
   }
   
-  .quantity-controls {
+  .cart-container .cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .cart-container .product-info {
     display: flex;
     align-items: center;
   }
   
-  .quantity-btn {
-    padding: 5px 10px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin: 0 5px;
-  }
-  
-  .quantity-input {
+  .cart-container .product-image {
     width: 50px;
+    height: 50px;
+    object-fit: cover;
+    margin-right: 10px;
+  }
+  
+  .cart-container .product-details {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .cart-container .product-name {
+    font-weight: bold;
+  }
+  
+  .cart-container .product-price {
+    color: #888;
+  }
+  
+  .cart-container .quantity-controls {
+    display: flex;
+    align-items: center;
+  }
+  
+  .cart-container .quantity-controls input {
+    width: 50px;
+    margin-right: 10px;
     padding: 5px;
-    text-align: center;
-    border: 1px solid #ddd;
-    border-radius: 4px;
   }
   
-  .remove-btn {
-    padding: 8px 12px;
-    background-color: #dc3545;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+  .cart-container .cart-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-top: 1px solid #ccc;
+    margin-top: 20px;
   }
   
-  .remove-btn:hover {
-    background-color: #c82333;
+  .cart-container .cart-summary span {
+    font-size: 1.2em;
+    font-weight: bold;
   }
   
-  .cart-summary {
-    background-color: #f9f9f9;
-    padding: 20px;
-    margin-bottom: 20px;
-  }
-  
-  .summary-item {
-    margin-bottom: 10px;
-  }
-  
-  .promo-code {
-    margin-bottom: 20px;
-  }
-  
-  .promo-code input {
-    padding: 8px;
-    width: 200px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-  }
-  
-  .apply-btn {
-    padding: 8px 12px;
+  .cart-container .cart-summary button {
+    padding: 10px 20px;
     background-color: #28a745;
-    color: #fff;
+    color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 5px;
     cursor: pointer;
-    margin-left: 10px;
   }
   
-  .apply-btn:hover {
+  .cart-container .cart-summary button:hover {
     background-color: #218838;
   }
   
-  .checkout-btn {
-    padding: 12px 20px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+  .cart-container .cart-summary a {
+    text-decoration: none;
+    color: #007bff;
   }
   
-  .checkout-btn:hover {
-    background-color: #0056b3;
-  }
-  
-  .related-products {
-    margin-bottom: 20px;
-  }
-  
-  .related-products h2 {
-    margin-bottom: 10px;
-  }
-  
-  .related-products-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-  }
-  
-  .related-product {
-    width: calc(33.33% - 20px);
-    padding: 10px;
-    border: 1px solid #eee;
-    border-radius: 5px;
-  }
-  
-  .related-product h3 {
-    font-size: 1rem;
-    margin-bottom: 5px;
-  }
-  
-  .related-product p {
-    font-size: 0.9rem;
-    margin-bottom: 10px;
-  }
-  
-  .continue-shopping-btn {
-    padding: 12px 20px;
-    background-color: #6c757d;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .continue-shopping-btn:hover {
-    background-color: #5a6268;
+  .cart-container .cart-summary a:hover {
+    color: #0056b3;
   }
   

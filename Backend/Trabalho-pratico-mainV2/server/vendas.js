@@ -1,6 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const Venda = require("../data/venda/venda");
+const Venda = require("../data/venda/venda"); 
 const vendaController = require("../data/venda/vendaController")(Venda);
 
 const vendasRouter = () => {
@@ -9,20 +9,17 @@ const vendasRouter = () => {
     router.use(bodyParser.json());
 
     router.route("/")
-        .get(async (req, res, next) => {
-            try {
-                const vendas = await vendaController.getAllVendas(req, res);
-            } catch (err) {
-                next(err);
-            }
-        })
-        .post(async (req, res, next) => {
-            try {
-                const venda = await vendaController.createVenda(req, res);
-            } catch (err) {
-                next(err);
-            }
-        });
+        .get(vendaController.getAllVendas)
+        .post(vendaController.createVenda);
+
+    router.route("/carrinho/add")
+        .post(vendaController.addProdutoAoCarrinho);
+
+    router.route("/carrinho/update")
+        .put(vendaController.updateQuantidadeProdutoNoCarrinho);
+
+    router.route("/carrinho/remove")
+        .post(vendaController.removeProdutoDoCarrinho);
 
     return router;
 };

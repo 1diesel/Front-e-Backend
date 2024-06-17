@@ -1,3 +1,5 @@
+// data/produto/produto.js
+
 const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
@@ -11,6 +13,7 @@ const ProdutoSchema = new Schema({
     subcategoria: { type: String, required: false },
     quantidadeDisponivel: { type: Number, default: 0 },
     quantidadeMinima: { type: Number, required: true },
+    imagemBase64: { type: String, required: false }
 });
 
 const Produto = mongoose.model("Produto", ProdutoSchema);

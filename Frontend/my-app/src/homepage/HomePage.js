@@ -1,4 +1,5 @@
-// src/components/HomePage.js
+// homepage/HomePage.js
+
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./HomePage.css";
@@ -32,7 +33,7 @@ function HomePage() {
           {produtos.map((produto) => (
             <div className="product-card" key={produto._id}>
               <img
-                src="https://via.placeholder.com/150" // Substitua pela URL real da imagem do produto
+                src={`data:image/jpeg;base64,${produto.imagemBase64}`} // Exibe a imagem em base64
                 alt={produto.nome}
                 className="product-image"
               />
@@ -45,6 +46,9 @@ function HomePage() {
             </div>
           ))}
         </div>
+        <Link to="/produtos">
+          <button className="ver-produtos-button">Ver Todos os Produtos</button>
+        </Link>
       </div>
     </div>
   );

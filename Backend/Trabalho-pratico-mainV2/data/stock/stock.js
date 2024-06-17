@@ -8,7 +8,7 @@ const StockSchema = new Schema({
     quantidade: { type: Number, required: true },
     idProduto: { type: Schema.Types.ObjectId, ref: 'Produto', required: true },
     data: { type: Date, required: true },
-    anotacoes: { type: String },
+    anotacoes: { type: String, required: false },
 });
 
 const Stock = mongoose.model("Stock", StockSchema);

@@ -1,12 +1,12 @@
-// src/components/ProductDetails.js
 import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import "./ProductDetails.css";
 
 const ProductDetails = () => {
   const { productId } = useParams();
   const [produto, setProduto] = useState(null);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProduto = async () => {
@@ -17,6 +17,7 @@ const ProductDetails = () => {
         }
         const data = await response.json();
         setProduto(data);
+        console.log("Produto carregado:", data);
       } catch (error) {
         console.error("Erro ao buscar detalhes do produto:", error);
       }
@@ -27,25 +28,30 @@ const ProductDetails = () => {
 
   const handleAddToCart = async () => {
     try {
-      const response = await fetch('http://localhost:3001/vendas', {
-        method: 'POST',
+      const response = await fetch("http://localhost:3001/vendas", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ 
-          produtoId: produto._id, 
-          quantidade: 1 }), // Adiciona 1 unidade ao carrinho
+        body: JSON.stringify({
+          produtoId: produto._id,
+          quantidade: 1,
+        }),
       });
       if (!response.ok) {
-        throw new Error('Erro ao adicionar ao carrinho');
+        throw new Error("Erro ao adicionar ao carrinho");
       }
       const data = await response.json();
-      setMessage('Produto adicionado ao carrinho com sucesso!');
-      console.log('Produto adicionado ao carrinho:', data);
+      setMessage("Produto adicionado ao carrinho com sucesso!");
+      console.log("Produto adicionado ao carrinho:", data);
     } catch (error) {
-      setMessage('Erro ao adicionar ao carrinho');
-      console.error('Erro ao adicionar ao carrinho:', error);
+      setMessage("Erro ao adicionar ao carrinho");
+      console.error("Erro ao adicionar ao carrinho:", error);
     }
+  };
+
+  const handleEditProduct = () => {
+    navigate(`/produtos/editar/${productId}`);
   };
 
   if (!produto) {
@@ -61,10 +67,15 @@ const ProductDetails = () => {
       </div>
       <div className="product-main">
         <div className="product-image">
-          <img
-            src={produto.imagemUrl || "https://via.placeholder.com/300"} // Substitua pela URL real da imagem do produto
-            alt={produto.nome}
-          />
+          {produto.imagemBase64 ? (
+            <img
+              src={`data:image/jpeg;base64,${produto.imagemBase64}`}
+              alt={produto.nome}
+              className="product-image"
+            />
+          ) : (
+            <p>Sem imagem disponível</p>
+          )}
         </div>
         <div className="product-info">
           <h1>{produto.nome}</h1>
@@ -72,9 +83,16 @@ const ProductDetails = () => {
           <p className="ref">Referência: {produto.ref}</p>
           <p className="categoria">Categoria: {produto.categoria}</p>
           <p className="subcategoria">Subcategoria: {produto.subcategoria}</p>
-          <div className="quantity">Quantidade Disponível: {produto.quantidadeDisponivel}</div>
+          <div className="quantity">
+            Quantidade Disponível: {produto.quantidadeDisponivel}
+          </div>
           <div className="buttons">
-            <button className="add-to-cart-button" onClick={handleAddToCart}>Adicionar ao Carrinho</button>
+            <button className="add-to-cart-button" onClick={handleAddToCart}>
+              Adicionar ao Carrinho
+            </button>
+            <button className="edit-product-button" onClick={handleEditProduct}>
+              Editar Produto
+            </button>
             {message && <p className="message">{message}</p>}
           </div>
         </div>
@@ -83,7 +101,9 @@ const ProductDetails = () => {
         <h2>Descrição do Produto</h2>
         <p>{produto.descricao}</p>
       </div>
-      <Link to="/" className="back-to-home">← Voltar para a Home</Link>
+      <Link to="/" className="back-to-home">
+        ← Voltar para a Home Page
+      </Link>
     </div>
   );
 };

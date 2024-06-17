@@ -1,5 +1,7 @@
 /* Header.css */
 .header {
+  width: 100%;
+  box-sizing: border-box;
   background-color: #260700;
   color: #db6b1a;
   padding: 7px 15px;
