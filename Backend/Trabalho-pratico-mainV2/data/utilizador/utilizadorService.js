@@ -15,17 +15,17 @@ function utilizadorCreate(utilizadorModel) {
   };
 
   function update(id, userData) {
-    return utilizadorModel.findByIdAndUpdate(id, userData, { new: true }).exec();
+    return utilizadorModel
+      .findByIdAndUpdate(id, userData, { new: true })
+      .exec();
   }
-
 
   function createPassword(utilizador) {
     return bcrypt.hash(utilizador.password, config.saltRounds);
   }
 
   function create(utilizador) {
-    return createPassword(utilizador)
-    .then((hashPassword, err) => {
+    return createPassword(utilizador).then((hashPassword, err) => {
       if (err) {
         return Promise.reject("Não salvo");
       }
@@ -64,21 +64,22 @@ function utilizadorCreate(utilizadorModel) {
   }
 
   // Função para autorizar acesso com base nas permissões do utilizador
-  function authorize(scopes) {
+  function authorize(requiredScopes) {
     return (request, response, next) => {
-      const { roleUtilizador } = request;
-      console.log("route scopes:", scopes);
-      console.log("user scopes:", roleUtilizador);
+      const { user } = request;
 
-      // Verifica se o utilizador tem autorização para aceder à rota com base nas permissões
-      const hasAuthoritization = scopes.some((scope) =>
-        roleUtilizador.includes(scopes)
+      if (!user || !user.role || !user.role.scopes) {
+        return response.status(403).json({ message: "Forbidden" });
+      }
+
+      const hasAuthorization = requiredScopes.some((scope) =>
+        user.role.scopes.includes(scope)
       );
 
-      if (roleUtilizador && hasAuthoritization) {
-        next(); // Permite o acesso à próxima função middleware
+      if (hasAuthorization) {
+        next();
       } else {
-        response.status(403).json({ message: "Forbidden" }); // Responde com um código de acesso proibido
+        response.status(403).json({ message: "Forbidden" });
       }
     };
   }

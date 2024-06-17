@@ -1,8 +1,6 @@
+// data/venda/venda.js
 const mongoose = require("mongoose");
-
 const Schema = mongoose.Schema;
-
-
 
 const ProdutoNoCarrinhoSchema = new Schema({
     produto: { type: Schema.Types.ObjectId, ref: 'Produto', required: true },

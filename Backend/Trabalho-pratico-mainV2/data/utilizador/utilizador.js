@@ -9,12 +9,12 @@ let RoleSchema = new Schema({
   scopes: [
     {
       type: String,
-      enum: [scopes["read-all"], scopes["read-posts"], scopes["manage-posts"]],
+      enum: Object.values(scopes), // Use todos os valores definidos em `scopes`
     },
   ],
 });
 
-// Define the Utilizador schema
+// Define o Utilizador schema
 const UtilizadorSchema = new Schema({
   name: { type: String, required: true },
   password: { type: String, required: true },
@@ -42,8 +42,8 @@ UtilizadorSchema.statics.verifyToken = function (token) {
 
 // Add a static method to the Utilizador schema for finding a Utilizador
 UtilizadorSchema.statics.findUtilizador = function ({ name }) {
-    return this.findOne({ name });
-  };
+  return this.findOne({ name });
+};
 
 const Utilizador = mongoose.model("Utilizador", UtilizadorSchema); // Compile the Utilizador model
 

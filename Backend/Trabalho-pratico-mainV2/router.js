@@ -20,6 +20,7 @@ function initialize() {
     api.use("/stock", StockAPI());
     api.use("/utilizadores", UtilizadorAPI());
     api.use("/vendas", VendaAPI());
+    
 
     return api;
 }

@@ -1,7 +1,9 @@
 // src/carrinho/CartPage.js
-import React, { useState, useEffect } from "react";
+
+import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { AuthContext } from "../context/AuthContext";
 
 const CartContainer = styled.div`
   display: flex;
@@ -98,19 +100,30 @@ const CartSummary = styled.div`
 const CartPage = () => {
   const [cartItems, setCartItems] = useState([]);
   const [total, setTotal] = useState(0);
+  const { auth } = useContext(AuthContext);
 
   useEffect(() => {
-    fetch("http://127.0.0.1:3001/vendas")
-      .then((response) => response.json())
-      .then((data) => {
-        const carrinhoAtual = data.find(venda => venda.estado === "Carrinho");
-        if (carrinhoAtual) {
-          setCartItems(carrinhoAtual.produtos);
-          calculateTotal(carrinhoAtual.produtos);
+    const fetchCartItems = async () => {
+      if (auth.isAuthenticated) {
+        try {
+          const response = await fetch("http://127.0.0.1:3001/vendas/carrinho", {
+            headers: {
+              "Authorization": `Bearer ${auth.token}`
+            }
+          });
+          const data = await response.json();
+          if (data.produtos) {
+            setCartItems(data.produtos);
+            calculateTotal(data.produtos);
+          }
+        } catch (error) {
+          console.error("Error fetching cart items:", error);
         }
-      })
-      .catch((error) => console.error("Error fetching cart items:", error));
-  }, []);
+      }
+    };
+
+    fetchCartItems();
+  }, [auth]);
 
   const calculateTotal = (items) => {
     const totalValue = items.reduce(

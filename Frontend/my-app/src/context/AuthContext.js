@@ -1,4 +1,5 @@
 // src/context/AuthContext.js
+
 import React, { createContext, useState, useEffect } from 'react';
 
 export const AuthContext = createContext();
@@ -21,14 +22,17 @@ const AuthProvider = ({ children }) => {
 
   const fetchUserDetails = async (token) => {
     try {
-      const response = await fetch('http://127.0.0.1:3001/auth/user', {
+      const response = await fetch('http://127.0.0.1:3001/auth/me', {  // Change this endpoint as per your backend
         headers: {
           'Content-type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
       });
+
       const result = await response.json();
-      if (result.user) {
+
+      // Check if result contains the user information
+      if (result && result.user) {
         setAuth((prevAuth) => ({
           ...prevAuth,
           isAuthenticated: true,
@@ -54,7 +58,7 @@ const AuthProvider = ({ children }) => {
       if (result.token) {
         const newAuth = {
           isAuthenticated: true,
-          user: result.user,
+          user: result.user, // Assuming the user info is returned here
           token: result.token,
         };
         setAuth(newAuth);

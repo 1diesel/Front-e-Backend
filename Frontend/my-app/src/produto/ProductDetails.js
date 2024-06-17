@@ -1,5 +1,8 @@
-import React, { useEffect, useState } from "react";
+// src/product/ProductDetails.js
+
+import React, { useEffect, useState, useContext } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 import "./ProductDetails.css";
 
 const ProductDetails = () => {
@@ -7,6 +10,7 @@ const ProductDetails = () => {
   const [produto, setProduto] = useState(null);
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
+  const { auth } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchProduto = async () => {
@@ -27,14 +31,28 @@ const ProductDetails = () => {
   }, [productId]);
 
   const handleAddToCart = async () => {
+    console.log("Auth state:", auth); // Log the auth state to inspect
+
+    if (!auth.isAuthenticated) {
+      setMessage("Você precisa estar logado para adicionar produtos ao carrinho.");
+      navigate("/login");
+      return;
+    }
+
+    if (!auth.user) {
+      setMessage("Informação do usuário não disponível.");
+      return;
+    }
+
     try {
       const response = await fetch("http://localhost:3001/vendas/carrinho/add", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${auth.token}`, // Include token for authorization
         },
         body: JSON.stringify({
-          cliente: "Nome do Cliente",  // Ajuste conforme necessário
+          cliente: auth.user.name,  // Use authenticated user's name
           produtoId: produto._id,
           quantidade: 1,
         }),
@@ -91,9 +109,11 @@ const ProductDetails = () => {
             <button className="add-to-cart-button" onClick={handleAddToCart}>
               Adicionar ao Carrinho
             </button>
-            <button className="edit-product-button" onClick={handleEditProduct}>
-              Editar Produto
-            </button>
+            {auth.isAuthenticated && auth.user?.role?.scopes?.includes("manage-products") && (
+              <button className="edit-product-button" onClick={handleEditProduct}>
+                Editar Produto
+              </button>
+            )}
             {message && <p className="message">{message}</p>}
           </div>
         </div>

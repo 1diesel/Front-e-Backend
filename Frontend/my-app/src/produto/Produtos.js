@@ -24,25 +24,34 @@ const Produtos = () => {
     fetch("http://localhost:3001/produtos")
       .then((response) => response.json())
       .then((data) => {
-        setProdutos(data);
+        if (Array.isArray(data)) {
+          setProdutos(data);
 
-        // Determinar o preço mínimo e máximo dos produtos
-        const precos = data.map((produto) => produto.preco);
-        const precoMin = Math.min(...precos);
-        const precoMax = Math.max(...precos);
-        setPrecoMinimo(precoMin);
-        setPrecoMaximo(precoMax);
-        setPrecoMinSelecionado(precoMin);
-        setPrecoMaxSelecionado(precoMax);
+          // Determinar o preço mínimo e máximo dos produtos
+          const precos = data.map((produto) => produto.preco);
+          const precoMin = Math.min(...precos);
+          const precoMax = Math.max(...precos);
+          setPrecoMinimo(precoMin);
+          setPrecoMaximo(precoMax);
+          setPrecoMinSelecionado(precoMin);
+          setPrecoMaxSelecionado(precoMax);
+        } else {
+          setProdutos([]);
+        }
       })
-      .catch((error) => console.error(error));
+      .catch((error) => {
+        console.error(error);
+        setProdutos([]);
+      });
 
     // Buscar favoritos
     fetch("http://localhost:3001/favoritos")
       .then((response) => response.json())
       .then((data) =>
         setFavoritos(
-          data.reduce((acc, cur) => ({ ...acc, [cur.produtoId]: cur }), {})
+          Array.isArray(data)
+            ? data.reduce((acc, cur) => ({ ...acc, [cur.produtoId]: cur }), {})
+            : {}
         )
       )
       .catch((error) => console.error(error));

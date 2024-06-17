@@ -1,5 +1,8 @@
 // data/produto/produtoController.js
 
+const { authorize } = require("../data/utilizador/utilizadorService")(Utilizador);
+const scopes = require("../data/utilizador/scopes");
+
 function produtoController(ProdutoModel) {
     let controller = {};
 
@@ -35,18 +38,21 @@ function produtoController(ProdutoModel) {
         }
     };
 
-    controller.update = async (req, res, next) => {
-        try {
-            const produto = await ProdutoModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
-            if (!produto) {
-                res.status(404).send("Produto não encontrado");
-                return;
+    controller.update = [
+        authorize([scopes["manage-products"]]), // only allow users with manage-products scope
+        async (req, res, next) => {
+            try {
+                const produto = await ProdutoModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
+                if (!produto) {
+                    res.status(404).send("Produto não encontrado");
+                    return;
+                }
+                res.json(produto);
+            } catch (err) {
+                next(err);
             }
-            res.json(produto);
-        } catch (err) {
-            next(err);
         }
-    };
+    ];
 
     controller.delete = async (req, res, next) => {
         try {
