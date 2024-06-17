@@ -1,3 +1,4 @@
+// src/carrinho/CartPage.js
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -108,72 +109,32 @@ const CartPage = () => {
           calculateTotal(carrinhoAtual.produtos);
         }
       })
-      .catch((error) => {
-        console.error(error);
-      });
+      .catch((error) => console.error("Error fetching cart items:", error));
   }, []);
 
-  const calculateTotal = (produtos) => {
-    let total = 0;
-    produtos.forEach((item) => {
-      total += item.produto.preco * item.quantidade;
+  const calculateTotal = (items) => {
+    const totalValue = items.reduce(
+      (acc, item) => acc + item.preco * item.quantidade,
+      0
+    );
+    setTotal(totalValue);
+  };
+
+  const updateQuantity = (id, quantidade) => {
+    const updatedItems = cartItems.map((item) => {
+      if (item.id === id) {
+        return { ...item, quantidade };
+      }
+      return item;
     });
-    setTotal(total);
+    setCartItems(updatedItems);
+    calculateTotal(updatedItems);
   };
 
-  const handleQuantityChange = (produtoId, quantity) => {
-    fetch("http://127.0.0.1:3001/vendas/carrinho/update", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ cliente: "user@example.com", produtoId, quantidade: quantity }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setCartItems(data.produtos);
-        calculateTotal(data.produtos);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
-
-  const handleRemoveItem = (produtoId) => {
-    fetch("http://127.0.0.1:3001/vendas/carrinho/remove", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ cliente: "user@example.com", produtoId }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setCartItems(data.produtos);
-        calculateTotal(data.produtos);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
-
-  const handleCheckout = () => {
-    fetch("http://127.0.0.1:3001/vendas/carrinho/checkout", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ cliente: "user@example.com" }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        alert("Compra finalizada com sucesso!");
-        setCartItems([]);
-        setTotal(0);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+  const removeItem = (id) => {
+    const updatedItems = cartItems.filter((item) => item.id !== id);
+    setCartItems(updatedItems);
+    calculateTotal(updatedItems);
   };
 
   return (
@@ -181,30 +142,31 @@ const CartPage = () => {
       <h2>Carrinho de Compras</h2>
       <CartItems>
         {cartItems.map((item) => (
-          <CartItem key={item.produto._id}>
+          <CartItem key={item.id}>
             <ProductInfo>
-              <ProductImage src={`http://127.0.0.1:3001/uploads/${item.produto.imagem}`} alt={item.produto.nome} />
+              <ProductImage src={item.imagem} alt={item.nome} />
               <ProductDetails>
-                <ProductName>{item.produto.nome}</ProductName>
-                <ProductPrice>R$ {item.produto.preco.toFixed(2)}</ProductPrice>
+                <ProductName>{item.nome}</ProductName>
+                <ProductPrice>{item.preco}€</ProductPrice>
               </ProductDetails>
             </ProductInfo>
             <QuantityControls>
               <input
                 type="number"
                 value={item.quantidade}
-                onChange={(e) => handleQuantityChange(item.produto._id, parseInt(e.target.value))}
+                onChange={(e) =>
+                  updateQuantity(item.id, parseInt(e.target.value, 10))
+                }
                 min="1"
               />
-              <button onClick={() => handleRemoveItem(item.produto._id)}>Remover</button>
+              <button onClick={() => removeItem(item.id)}>Remover</button>
             </QuantityControls>
           </CartItem>
         ))}
       </CartItems>
       <CartSummary>
-        <span>Total: R$ {total.toFixed(2)}</span>
-        <button onClick={handleCheckout}>Finalizar Compra</button>
-        <Link to="/">Continuar Comprando</Link>
+        <span>Total: {total.toFixed(2)}€</span>
+        <Link to="/checkout">Finalizar Compra</Link>
       </CartSummary>
     </CartContainer>
   );

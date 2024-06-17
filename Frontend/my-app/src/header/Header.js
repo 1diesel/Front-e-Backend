@@ -21,7 +21,6 @@ const Header = ({ darkMode }) => {
         </Link>
       </div>
       <div className="header-center">
-        <input type="text" className="search-bar" placeholder="Pesquisar..." />
       </div>
       <div className="header-right">
         {auth.isAuthenticated ? (

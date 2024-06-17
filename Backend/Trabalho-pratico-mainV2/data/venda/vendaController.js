@@ -1,3 +1,5 @@
+const Produto = require('../produto/produto'); // Importando o modelo Produto
+
 function vendaController(VendaModel) {
     const controller = {};
 
@@ -12,33 +14,47 @@ function vendaController(VendaModel) {
 
     controller.createVenda = async (req, res) => {
         const { cliente, produtos, total, estado } = req.body;
-
+    
         if (!cliente || !produtos || produtos.length === 0 || !total || !estado) {
             return res.status(400).json({ message: "Dados incompletos para criar a venda" });
         }
-
+    
+        for (const produto of produtos) {
+            if (!produto.ref || !produto.descricao || !produto.quantidade || !produto.preco || !produto.total) {
+                return res.status(400).json({ message: "Dados incompletos para um ou mais produtos" });
+            }
+        }
+    
         try {
+            const nrVenda = Math.floor(Math.random() * 1000000);
+    
             const venda = new VendaModel({
-                nrVenda: Math.floor(Math.random() * 1000000),
+                nrVenda,
                 cliente,
                 produtos,
                 total,
                 estado
             });
-
+    
             await venda.save();
             res.status(201).json(venda);
         } catch (error) {
-            res.status(500).json({ message: "Erro ao criar venda", error });
+            if (error.code === 11000) {
+                res.status(409).json({ message: "Erro de chave duplicada: ref de produto deve ser único.", error });
+            } else {
+                res.status(500).json({ message: "Erro ao criar venda", error });
+            }
         }
     };
 
     controller.addProdutoAoCarrinho = async (req, res) => {
         const { cliente, produtoId, quantidade } = req.body;
-
+        console.log('Dados recebidos para adicionar ao carrinho:', req.body);
+    
         try {
-            let venda = await VendaModel.findOne({ cliente, estado: "Carrinho" });
-
+            let venda = await VendaModel.findOne({ cliente, estado: "Carrinho" }).populate('produtos.produto');
+            console.log('Venda encontrada:', venda);
+    
             if (!venda) {
                 venda = new VendaModel({
                     nrVenda: Math.floor(Math.random() * 1000000),
@@ -47,19 +63,32 @@ function vendaController(VendaModel) {
                     total: 0,
                     estado: "Carrinho"
                 });
+                console.log('Nova venda criada:', venda);
             }
-
-            const produtoExistente = venda.produtos.find(p => p.produto.toString() === produtoId);
-
-            if (produtoExistente) {
-                produtoExistente.quantidade += quantidade;
+    
+            const produtoExistenteIndex = venda.produtos.findIndex(p => p.produto._id.toString() === produtoId);
+            if (produtoExistenteIndex !== -1) {
+                venda.produtos[produtoExistenteIndex].quantidade += quantidade;
             } else {
-                venda.produtos.push({ produto: produtoId, quantidade });
+                const produto = await Produto.findById(produtoId);
+                if (!produto) {
+                    return res.status(404).json({ message: "Produto não encontrado" });
+                }
+    
+                venda.produtos.push({
+                    produto: produto._id,
+                    quantidade
+                });
             }
-
+    
+            // Populando produtos antes de calcular o total
+            await VendaModel.populate(venda, { path: 'produtos.produto' });
+            venda.total = venda.produtos.reduce((acc, p) => acc + (p.produto.preco * p.quantidade), 0);
+    
             await venda.save();
             res.status(200).json(venda);
         } catch (error) {
+            console.error('Erro ao adicionar produto ao carrinho:', error);
             res.status(500).json({ message: "Erro ao adicionar produto ao carrinho", error });
         }
     };

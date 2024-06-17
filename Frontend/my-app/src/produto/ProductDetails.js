@@ -28,12 +28,13 @@ const ProductDetails = () => {
 
   const handleAddToCart = async () => {
     try {
-      const response = await fetch("http://localhost:3001/vendas", {
+      const response = await fetch("http://localhost:3001/vendas/carrinho/add", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          cliente: "Nome do Cliente",  // Ajuste conforme necessário
           produtoId: produto._id,
           quantidade: 1,
         }),

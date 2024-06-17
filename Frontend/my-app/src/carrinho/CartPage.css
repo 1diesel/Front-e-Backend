@@ -1,17 +1,17 @@
-.cart-container {
+.cart-container1 {
     /* Estilos gerais do carrinho */
     display: flex;
     flex-direction: column;
     padding: 20px;
   }
   
-  .cart-container .cart-items {
+  .cart-container1 .cart-items1 {
     flex: 1;
     display: flex;
     flex-direction: column;
   }
   
-  .cart-container .cart-item {
+  .cart-container1 .cart-item1 {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -19,43 +19,43 @@
     border-bottom: 1px solid #ccc;
   }
   
-  .cart-container .product-info {
+  .cart-container1 .product-info1 {
     display: flex;
     align-items: center;
   }
   
-  .cart-container .product-image {
+  .cart-container1 .product-image1 {
     width: 50px;
     height: 50px;
     object-fit: cover;
     margin-right: 10px;
   }
   
-  .cart-container .product-details {
+  .cart-container1 .product-details1 {
     display: flex;
     flex-direction: column;
   }
   
-  .cart-container .product-name {
+  .cart-container1 .product-name1 {
     font-weight: bold;
   }
   
-  .cart-container .product-price {
+  .cart-container1 .product-price1 {
     color: #888;
   }
   
-  .cart-container .quantity-controls {
+  .cart-container1 .quantity-controls1 {
     display: flex;
     align-items: center;
   }
   
-  .cart-container .quantity-controls input {
+  .cart-container1 .quantity-controls1 input {
     width: 50px;
     margin-right: 10px;
     padding: 5px;
   }
   
-  .cart-container .cart-summary {
+  .cart-container1 .cart-summary1 {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -64,12 +64,12 @@
     margin-top: 20px;
   }
   
-  .cart-container .cart-summary span {
+  .cart-container1 .cart-summary1 span {
     font-size: 1.2em;
     font-weight: bold;
   }
   
-  .cart-container .cart-summary button {
+  .cart-container1 .cart-summary1 button {
     padding: 10px 20px;
     background-color: #28a745;
     color: white;
@@ -78,16 +78,16 @@
     cursor: pointer;
   }
   
-  .cart-container .cart-summary button:hover {
+  .cart-container1 .cart-summary1 button:hover {
     background-color: #218838;
   }
   
-  .cart-container .cart-summary a {
+  .cart-container1 .cart-summary1 a {
     text-decoration: none;
     color: #007bff;
   }
   
-  .cart-container .cart-summary a:hover {
+  .cart-container1 .cart-summary1 a:hover {
     color: #0056b3;
   }
   

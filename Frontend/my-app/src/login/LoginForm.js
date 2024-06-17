@@ -1,3 +1,4 @@
+// src/login/LoginForm.js
 import React, { useState, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, Link } from 'react-router-dom';
@@ -11,17 +12,14 @@ const LoginForm = () => {
   const { login } = useContext(AuthContext);
 
   const onSubmit = async (data) => {
-    // Ajusta a chave 'utilizador' para 'name' antes de enviar ao backend
-    data.name = data.utilizador;
+    data.name = data.utilizador; // Ajusta o campo 'utilizador' para 'name'
     delete data.utilizador;
 
     const result = await login(data);
     if (result.success) {
-      console.log('Login successful');
       navigate('/utilizador'); // Redireciona para a página do utilizador após o login
     } else {
       setErrorMessage(result.message);
-      console.log('Login failed');
     }
   };
 

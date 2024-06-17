@@ -39,8 +39,10 @@
 
 .product-image {
   width: 100%;
-  height: auto;
+  aspect-ratio: 1/1;
   margin-bottom: 5px;
+  object-fit: cover;
+
 }
 
 h1 {

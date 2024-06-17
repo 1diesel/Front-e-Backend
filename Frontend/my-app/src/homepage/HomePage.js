@@ -28,7 +28,7 @@ function HomePage() {
     <div className="homepage">
       <div className="content">
         <h1>Bem-vindo à Loja de Bricolage DT</h1>
-        <p>Encontre tudo o que precisa para os seus projetos de bricolage.</p>
+        <p>Destaques da semana</p>
         <div className="product-grid">
           {produtos.map((produto) => (
             <div className="product-card" key={produto._id}>
